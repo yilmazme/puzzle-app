@@ -6,9 +6,20 @@ import { GameScreen } from './src/screens/GameScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { Level, LEVELS } from './src/game/puzzle';
 import { pickImage, PuzzleImage } from './src/image';
+import { SettingsProvider, useSettings } from './src/settings';
+import { playSound } from './src/sound';
 import { loadScores, Scores } from './src/storage';
 
 export default function App() {
+  return (
+    <SettingsProvider>
+      <Main />
+    </SettingsProvider>
+  );
+}
+
+function Main() {
+  const { t } = useSettings();
   const [image, setImage] = useState<PuzzleImage | null>(null);
   const [loading, setLoading] = useState(false);
   const [level, setLevel] = useState<Level>(LEVELS[0]);
@@ -35,12 +46,13 @@ export default function App() {
   }, [playing]);
 
   const handlePick = async () => {
+    playSound('click');
     setLoading(true);
     try {
       const picked = await pickImage();
       if (picked) setImage(picked);
     } catch {
-      Alert.alert('Could not load the photo', 'Please try another image.');
+      Alert.alert(t('photoErrorTitle'), t('photoErrorMessage'));
     } finally {
       setLoading(false);
     }
@@ -65,7 +77,10 @@ export default function App() {
           scores={scores}
           onPick={handlePick}
           onSelectLevel={setLevel}
-          onStart={() => setPlaying(true)}
+          onStart={() => {
+            playSound('click');
+            setPlaying(true);
+          }}
         />
       )}
     </SafeAreaProvider>

@@ -6,14 +6,25 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
-    "platforms": ["android"],
+    "platforms": [
+      "android"
+    ],
     "plugins": [
       [
         "expo-image-picker",
         {
           "photosPermission": "Photo Puzzle needs access to your photos so you can turn them into puzzles."
         }
-      ]
+      ],
+      [
+        "expo-audio",
+        {
+          "recordAudioAndroid": false,
+          "microphonePermission": false,
+          "enableBackgroundPlayback": false
+        }
+      ],
+      "expo-asset"
     ],
     "android": {
       "package": "com.photopuzzle.app",

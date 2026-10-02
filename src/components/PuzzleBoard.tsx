@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { swapSlots } from '../game/puzzle';
+import { playSound } from '../sound';
 
 type Props = {
   uri: string;
@@ -91,6 +92,7 @@ export function PuzzleBoard(props: Props) {
           const row = Math.min(rs - 1, Math.max(0, Math.floor(evt.nativeEvent.locationY / h)));
           drag.setValue(0);
           stateRef.current = null;
+          playSound('pick');
           updateState({ from: row * cs + col, to: null, dx: 0, dy: 0 });
         },
         onPanResponderMove: (_, g) => {
@@ -126,6 +128,7 @@ export function PuzzleBoard(props: Props) {
           if (dist > size * 0.4 || velocity > 0.6) {
             busy.current = true;
             Haptics.selectionAsync().catch(() => {});
+            playSound('drop');
             Animated.timing(drag, {
               toValue: size,
               duration: 90,

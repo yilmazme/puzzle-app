@@ -21,6 +21,8 @@ import {
   solvedOrder,
 } from '../game/puzzle';
 import { PuzzleImage } from '../image';
+import { useSettings } from '../settings';
+import { playSound } from '../sound';
 import { BestScore, saveScore } from '../storage';
 import { colors } from '../theme';
 
@@ -40,6 +42,7 @@ const formatTime = (s: number) =>
 
 export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
   useKeepAwake();
+  const { t } = useSettings();
   const insets = useSafeAreaInsets();
   const win = useWindowDimensions();
 
@@ -117,6 +120,7 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
       setMoves(newMoves);
       if (isSolved(next)) {
         setPhase('celebrate');
+        playSound('win');
         setPeeking(false);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(
           () => {},
@@ -148,18 +152,26 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
       ]}
     >
       <View style={styles.header}>
-        <Pressable onPress={onExit} hitSlop={12}>
-          <Text style={styles.link}>‹ Menu</Text>
+        <Pressable
+          onPress={() => {
+            playSound('click');
+            onExit();
+          }}
+          hitSlop={12}
+        >
+          <Text style={styles.link}>{t('menuBack')}</Text>
         </Pressable>
         <Text style={styles.title}>
-          Level {level.id} · {pieceCount(level)} pieces
+          {t('levelTitle', { n: level.id, p: pieceCount(level) })}
         </Text>
         <View style={{ width: 56 }} />
       </View>
 
       <View style={styles.stats}>
-        <Text style={styles.stat}>Moves: {moves}</Text>
-        <Text style={styles.stat}>Time: {formatTime(seconds)}</Text>
+        <Text style={styles.stat}>{t('moves', { n: moves })}</Text>
+        <Text style={styles.stat}>
+          {t('time', { t: formatTime(seconds) })}
+        </Text>
       </View>
 
       <View style={styles.boardWrap}>
@@ -180,7 +192,7 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
         {phase === 'preview' && (
           <View style={styles.badge} pointerEvents="none">
             <Text style={styles.badgeText}>
-              Memorize it… {countdown > 0 ? countdown : ''}
+              {t('memorize')} {countdown > 0 ? countdown : ''}
             </Text>
           </View>
         )}
@@ -190,47 +202,67 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
         <Pressable
           style={[styles.button, phase !== 'playing' && styles.disabled]}
           disabled={phase !== 'playing'}
-          onPressIn={() => setPeeking(true)}
+          onPressIn={() => {
+            playSound('click');
+            setPeeking(true);
+          }}
           onPressOut={() => setPeeking(false)}
         >
-          <Text style={styles.buttonText}>Hold to peek</Text>
+          <Text style={styles.buttonText}>{t('peek')}</Text>
         </Pressable>
         <Pressable
           style={[styles.button, phase === 'celebrate' && styles.disabled]}
           disabled={phase === 'celebrate'}
-          onPress={() => setAttempt((a) => a + 1)}
+          onPress={() => {
+            playSound('click');
+            setAttempt((a) => a + 1);
+          }}
         >
-          <Text style={styles.buttonText}>Restart</Text>
+          <Text style={styles.buttonText}>{t('restart')}</Text>
         </Pressable>
       </View>
 
       {phase === 'won' && (
         <View style={styles.winOverlay}>
           <View style={styles.winCard}>
-            <Text style={styles.winTitle}>Puzzle solved! 🎉</Text>
+            <Text style={styles.winTitle}>{t('solved')}</Text>
             <Text style={styles.winText}>
-              {moves} moves · {formatTime(seconds)}
+              {t('result', { moves, time: formatTime(seconds) })}
             </Text>
-            {isRecord && <Text style={styles.record}>New best!</Text>}
+            {isRecord && <Text style={styles.record}>{t('newBest')}</Text>}
             {!isRecord && record && (
-              <Text style={styles.winText}>Best: {record.moves} moves</Text>
+              <Text style={styles.winText}>
+                {t('best', { n: record.moves })}
+              </Text>
             )}
             {nextLevel && (
               <Pressable
                 style={[styles.button, styles.primary]}
-                onPress={() => onSelectLevel(nextLevel)}
+                onPress={() => {
+                  playSound('click');
+                  onSelectLevel(nextLevel);
+                }}
               >
-                <Text style={styles.buttonText}>Next level</Text>
+                <Text style={styles.buttonText}>{t('nextLevel')}</Text>
               </Pressable>
             )}
             <Pressable
               style={styles.button}
-              onPress={() => setAttempt((a) => a + 1)}
+              onPress={() => {
+                playSound('click');
+                setAttempt((a) => a + 1);
+              }}
             >
-              <Text style={styles.buttonText}>Play again</Text>
+              <Text style={styles.buttonText}>{t('playAgain')}</Text>
             </Pressable>
-            <Pressable style={styles.button} onPress={onExit}>
-              <Text style={styles.buttonText}>Menu</Text>
+            <Pressable
+              style={styles.button}
+              onPress={() => {
+                playSound('click');
+                onExit();
+              }}
+            >
+              <Text style={styles.buttonText}>{t('menu')}</Text>
             </Pressable>
           </View>
         </View>

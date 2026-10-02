@@ -4,5 +4,6 @@ export const colors = {
   text: '#ffffff',
   muted: '#a9a9c8',
   accent: '#6c5ce7',
+  switchOff: '#5b5b82',
   gold: '#ffd166',
 };
