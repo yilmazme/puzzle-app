@@ -35,6 +35,9 @@ const en = {
   best: 'Best: {n} moves',
   nextLevel: 'Next level',
   playAgain: 'Play again',
+  errorTitle: 'Something went wrong',
+  errorMessage: 'The app ran into an unexpected problem.',
+  tryAgain: 'Try again',
 };
 
 export type TranslationKey = keyof typeof en;
@@ -69,6 +72,9 @@ const tr: Record<TranslationKey, string> = {
   best: 'En iyi: {n} hamle',
   nextLevel: 'Sonraki seviye',
   playAgain: 'Tekrar oyna',
+  errorTitle: 'Bir şeyler ters gitti',
+  errorMessage: 'Uygulama beklenmedik bir sorunla karşılaştı.',
+  tryAgain: 'Tekrar dene',
 };
 
 const es: Record<TranslationKey, string> = {
@@ -101,6 +107,9 @@ const es: Record<TranslationKey, string> = {
   best: 'Mejor: {n} movimientos',
   nextLevel: 'Siguiente nivel',
   playAgain: 'Jugar de nuevo',
+  errorTitle: 'Algo salió mal',
+  errorMessage: 'La aplicación tuvo un problema inesperado.',
+  tryAgain: 'Reintentar',
 };
 
 const dictionaries: Record<Language, Record<TranslationKey, string>> = {

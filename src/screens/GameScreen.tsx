@@ -153,10 +153,12 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
     >
       <View style={styles.header}>
         <Pressable
+          accessibilityRole="button"
           onPress={() => {
             playSound('click');
             onExit();
           }}
+          accessibilityLabel={t('menu')}
           hitSlop={12}
         >
           <Text style={styles.link}>{t('menuBack')}</Text>
@@ -200,6 +202,7 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
 
       <View style={styles.actions}>
         <Pressable
+          accessibilityRole="button"
           style={[styles.button, phase !== 'playing' && styles.disabled]}
           disabled={phase !== 'playing'}
           onPressIn={() => {
@@ -211,6 +214,7 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
           <Text style={styles.buttonText}>{t('peek')}</Text>
         </Pressable>
         <Pressable
+          accessibilityRole="button"
           style={[styles.button, phase === 'celebrate' && styles.disabled]}
           disabled={phase === 'celebrate'}
           onPress={() => {
@@ -237,6 +241,7 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
             )}
             {nextLevel && (
               <Pressable
+                accessibilityRole="button"
                 style={[styles.button, styles.primary]}
                 onPress={() => {
                   playSound('click');
@@ -247,6 +252,7 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
               </Pressable>
             )}
             <Pressable
+              accessibilityRole="button"
               style={styles.button}
               onPress={() => {
                 playSound('click');
@@ -256,6 +262,7 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
               <Text style={styles.buttonText}>{t('playAgain')}</Text>
             </Pressable>
             <Pressable
+              accessibilityRole="button"
               style={styles.button}
               onPress={() => {
                 playSound('click');

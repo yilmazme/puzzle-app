@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, BackHandler } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ErrorBoundary } from './src/components/ErrorBoundary';
 import { GameScreen } from './src/screens/GameScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { Level, LEVELS } from './src/game/puzzle';
@@ -13,7 +14,9 @@ import { loadScores, Scores } from './src/storage';
 export default function App() {
   return (
     <SettingsProvider>
-      <Main />
+      <ErrorBoundary>
+        <Main />
+      </ErrorBoundary>
     </SettingsProvider>
   );
 }

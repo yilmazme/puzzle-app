@@ -58,7 +58,10 @@ export function HomeScreen({
         {t('subtitle')}
       </Text>
 
-      <Pressable style={styles.preview} onPress={onPick} disabled={loading}>
+      <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={t('choosePhoto')}
+      style={styles.preview} onPress={onPick} disabled={loading}>
         {loading ? (
           <ActivityIndicator color={colors.text} size="large" />
         ) : image ? (
@@ -72,13 +75,14 @@ export function HomeScreen({
         )}
       </Pressable>
 
-      <Pressable style={styles.secondary} onPress={onPick} disabled={loading}>
+      <Pressable accessibilityRole="button" style={styles.secondary} onPress={onPick} disabled={loading}>
         <Text style={styles.buttonText}>
           {image ? t('changePhoto') : t('choosePhoto')}
         </Text>
       </Pressable>
 
       <Pressable
+        accessibilityRole="button"
         style={[styles.start, !image && styles.disabled]}
         onPress={onStart}
         disabled={!image || loading}
@@ -93,11 +97,13 @@ export function HomeScreen({
           const best = scores[l.id];
           return (
             <Pressable
+              accessibilityRole="button"
               key={l.id}
               onPress={() => {
                 playSound('click');
                 onSelectLevel(l);
               }}
+              accessibilityState={{ selected }}
               style={[styles.level, selected && styles.levelSelected]}
             >
               <Text style={styles.levelNumber}>{t('level', { n: l.id })}</Text>
@@ -120,6 +126,7 @@ export function HomeScreen({
       )} */}
 
       <Pressable
+        accessibilityState={{ expanded: settingsOpen }}
         style={styles.accordionHeader}
         onPress={() => {
           playSound('click');
@@ -137,6 +144,7 @@ export function HomeScreen({
       <View style={styles.settingRow}>
         <Text style={styles.settingLabel}>{t('soundEffects')}</Text>
         <Switch
+          accessibilityLabel={t('soundEffects')}
           value={soundEnabled}
           onValueChange={(value) => {
             setSoundEnabled(value);
@@ -151,7 +159,9 @@ export function HomeScreen({
         <View style={styles.languages}>
           {LANGUAGES.map((l) => (
             <Pressable
+              accessibilityRole="button"
               key={l.code}
+              accessibilityState={{ selected: language === l.code }}
               onPress={() => {
                 playSound('click');
                 setLanguage(l.code);
