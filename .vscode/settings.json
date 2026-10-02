@@ -1,0 +1,12 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^Get-ChildItem -Force \\| Select-Object Name; node -v; npm -v$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd c:\\\\Users\\\\GL75\\\\Desktop; npx --yes create-expo-app@latest puzzle-app --template blank-typescript --no-install 2>&1 \\| Select-Object -Last 15; Get-ChildItem puzzle-app -Force \\| Select Name$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
