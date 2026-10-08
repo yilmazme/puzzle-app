@@ -41,7 +41,16 @@
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a1510479-f9c9-4054-82ba-3cca68a0a4f0"
+      }
     }
   }
 }

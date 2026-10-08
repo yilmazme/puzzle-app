@@ -8,7 +8,7 @@ export const LANGUAGES: { code: Language; label: string }[] = [
 
 const en = {
   subtitle: 'Pick a photo, memorize it, then swap the pieces back into place.',
-  tapToChoose: 'Tap to choose a photo',
+  tapToChoose: 'Tap to choose a photo.',
   choosePhoto: 'Choose photo',
   changePhoto: 'Change photo',
   start: 'Start',
@@ -45,7 +45,7 @@ export type TranslationKey = keyof typeof en;
 const tr: Record<TranslationKey, string> = {
   subtitle:
     'Bir fotoğraf seç, aklında tut, sonra parçaları yerlerine geri değiştir.',
-  tapToChoose: 'Fotoğraf seçmek için dokun',
+  tapToChoose: 'Fotoğraf seçmek için dokun.',
   choosePhoto: 'Fotoğraf seç',
   changePhoto: 'Fotoğrafı değiştir',
   start: 'Başla',
@@ -80,7 +80,7 @@ const tr: Record<TranslationKey, string> = {
 const es: Record<TranslationKey, string> = {
   subtitle:
     'Elige una foto, memorízala y luego intercambia las piezas para volver a armarla.',
-  tapToChoose: 'Toca para elegir una foto',
+  tapToChoose: 'Toca para elegir una foto.',
   choosePhoto: 'Elegir foto',
   changePhoto: 'Cambiar foto',
   start: 'Empezar',
