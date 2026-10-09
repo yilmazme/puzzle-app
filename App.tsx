@@ -6,7 +6,7 @@ import { ErrorBoundary } from './src/components/ErrorBoundary';
 import { GameScreen } from './src/screens/GameScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { Level, LEVELS } from './src/game/puzzle';
-import { pickImage, PuzzleImage } from './src/image';
+import { getDefaultImage, pickImage, PuzzleImage } from './src/image';
 import { SettingsProvider, useSettings } from './src/settings';
 import { playSound } from './src/sound';
 import { loadScores, Scores } from './src/storage';
@@ -23,7 +23,7 @@ export default function App() {
 
 function Main() {
   const { t } = useSettings();
-  const [image, setImage] = useState<PuzzleImage | null>(null);
+  const [image, setImage] = useState<PuzzleImage>(getDefaultImage);
   const [loading, setLoading] = useState(false);
   const [level, setLevel] = useState<Level>(LEVELS[0]);
   const [scores, setScores] = useState<Scores>({});

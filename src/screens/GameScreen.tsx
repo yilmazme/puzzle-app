@@ -46,7 +46,20 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
   const insets = useSafeAreaInsets();
   const win = useWindowDimensions();
 
-  const aspect = image.width / image.height;
+  // Board spans nearly the full screen width; the photo is cover-cropped to fit its height.
+  const boardSize = useMemo(() => {
+    const width = Math.floor(win.width - 16);
+    const maxH = Math.max(120, win.height - insets.top - insets.bottom - 230);
+    const maxHeight = Math.min(maxH, width * 1.3);
+    const minHeight = Math.min(maxHeight, width * 0.6);
+    const natural = width * (image.height / image.width);
+    return {
+      width,
+      height: Math.floor(Math.min(maxHeight, Math.max(minHeight, natural))),
+    };
+  }, [win.width, win.height, insets.top, insets.bottom, image.width, image.height]);
+
+  const aspect = boardSize.width / boardSize.height;
   const { cols, rows } = gridFor(level, aspect);
 
   const [attempt, setAttempt] = useState(0);
@@ -133,13 +146,6 @@ export function GameScreen({ image, level, onExit, onSelectLevel }: Props) {
     },
     [moves, seconds, level.id],
   );
-
-  const boardSize = useMemo(() => {
-    const maxW = win.width - 32;
-    const maxH = win.height - insets.top - insets.bottom - 270;
-    const scale = Math.min(maxW / aspect, maxH);
-    return { width: Math.floor(scale * aspect), height: Math.floor(scale) };
-  }, [win.width, win.height, insets.top, insets.bottom, aspect]);
 
   const nextLevel = LEVELS.find((l) => l.id === level.id + 1);
   const showFull = phase === 'preview' || peeking;
@@ -293,7 +299,12 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   stat: { color: colors.muted, fontSize: 16 },
-  boardWrap: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  boardWrap: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: -8,
+  },
   badge: {
     position: 'absolute',
     top: 8,

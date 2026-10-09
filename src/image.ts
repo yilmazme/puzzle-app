@@ -1,7 +1,15 @@
+import { Image as RNImage } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator';
 
 export type PuzzleImage = { uri: string; width: number; height: number };
+
+const defaultAsset = require('../assets/images/mona_lisa.jpg');
+
+export function getDefaultImage(): PuzzleImage {
+  const { uri, width, height } = RNImage.resolveAssetSource(defaultAsset);
+  return { uri, width, height };
+}
 
 const MIN_ASPECT = 0.65;
 const MAX_ASPECT = 1.5;

@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Switch,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -43,6 +44,18 @@ export function HomeScreen({
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { soundEnabled, setSoundEnabled, language, setLanguage, t } =
     useSettings();
+  const { width: winWidth } = useWindowDimensions();
+
+  // Preview spans nearly the full screen width; height follows the photo within sane limits
+  const previewWidth = winWidth - 16;
+  const previewHeight = Math.round(
+    image
+      ? Math.min(
+          previewWidth * 1.1,
+          Math.max(previewWidth * 0.6, previewWidth * (image.height / image.width)),
+        )
+      : previewWidth * 0.6,
+  );
 
   return (
     <ScrollView
@@ -61,34 +74,36 @@ export function HomeScreen({
       <Pressable
       accessibilityRole="button"
       accessibilityLabel={t('choosePhoto')}
-      style={styles.preview} onPress={onPick} disabled={loading}>
+      style={[styles.preview, { height: previewHeight }]} onPress={onPick} disabled={loading}>
         {loading ? (
           <ActivityIndicator color={colors.text} size="large" />
         ) : image ? (
           <Image
             source={{ uri: image.uri }}
             style={styles.previewImage}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         ) : (
           <Text style={styles.previewHint}>{t('tapToChoose')}</Text>
         )}
       </Pressable>
 
-      <Pressable accessibilityRole="button" style={styles.secondary} onPress={onPick} disabled={loading}>
-        <Text style={styles.buttonText}>
-          {image ? t('changePhoto') : t('choosePhoto')}
-        </Text>
-      </Pressable>
+      <View style={styles.buttonRow}>
+        <Pressable accessibilityRole="button" style={styles.secondary} onPress={onPick} disabled={loading}>
+          <Text style={styles.buttonText}>
+            {image ? t('changePhoto') : t('choosePhoto')}
+          </Text>
+        </Pressable>
 
-      <Pressable
-        accessibilityRole="button"
-        style={[styles.start, !image && styles.disabled]}
-        onPress={onStart}
-        disabled={!image || loading}
-      >
-        <Text style={styles.startText}>{t('start')}</Text>
-      </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          style={[styles.start, !image && styles.disabled]}
+          onPress={onStart}
+          disabled={!image || loading}
+        >
+          <Text style={styles.startText}>{t('start')}</Text>
+        </Pressable>
+      </View>
 
       <Text style={styles.section}>{t('difficulty')}</Text>
       <View style={styles.levels}>
@@ -192,7 +207,7 @@ const styles = StyleSheet.create({
   },
   subtitle: { color: colors.muted, fontSize: 15, textAlign: 'center' },
   preview: {
-    height: 220,
+    marginHorizontal: -12,
     borderRadius: 16,
     backgroundColor: colors.card,
     alignItems: 'center',
@@ -204,13 +219,18 @@ const styles = StyleSheet.create({
   },
   previewImage: { width: '100%', height: '100%' },
   previewHint: { color: colors.muted, fontSize: 16 },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   secondary: {
+    width: '40%',
     backgroundColor: colors.card,
-    paddingVertical: 12,
+    paddingVertical: 10,
     borderRadius: 12,
     alignItems: 'center',
   },
-  buttonText: { color: colors.text, fontWeight: '700', fontSize: 16 },
+  buttonText: { color: colors.text, fontWeight: '700', fontSize: 15 },
   accordionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -263,12 +283,12 @@ const styles = StyleSheet.create({
   languageText: { color: colors.text, fontWeight: '600', fontSize: 15 },
   gridInfo: { color: colors.muted, textAlign: 'center', fontSize: 13 },
   start: {
+    width: '40%',
     backgroundColor: colors.accent,
-    paddingVertical: 16,
-    borderRadius: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
     alignItems: 'center',
-    marginTop: 6,
   },
-  startText: { color: '#fff', fontWeight: '800', fontSize: 20 },
+  startText: { color: '#fff', fontWeight: '800', fontSize: 16 },
   disabled: { opacity: 0.4 },
 });
